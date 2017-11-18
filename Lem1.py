@@ -72,6 +72,72 @@ for i in range(0, attr_num):
         new_cols_list.extend(col_cutpoints(col, i))
     except ValueError:
         new_cols_list.extend(list(col))
-new_data = np.array(new_cols_list).T
-#         col_av_dict = col_av(col, i)
-#         t_total_av.extend(col_av_dict)
+new_Data = np.array(new_cols_list).T
+
+# ---------- Calculating A* --------------------
+
+def A_set(vectors):
+    Attrs = vectors.tolist()
+    A_set = []
+    # unique_vecs = [vec for vec in set(tuple(x.tolist()) for x in Attrs)]
+    vec_set = [list(vec) for vec in set(tuple(x) for x in Attrs)]
+    for vec in vec_set:
+        # print(vec)
+        # A_set.append(np.where(np.prod(vectors==vec,axis=-1))[0])
+        A_set.append([pos for pos, y in enumerate(Attrs) if y == vec])
+    # print(A_set)
+
+    # print("****Time for A_set: ", stop-A_build)
+    print(A_set)
+    return A_set
+
+
+def D_set(concept_column):
+    d_set = []
+    d_set_dict = {}
+    uniques =  np.unique(concept_column)
+    for key in uniques:
+        s_set = np.where(concept_column == key)[0]
+        d_set.append(s_set)
+        d_set_dict[key] = s_set
+    print("d_set_dict: ", d_set_dict)
+    print("d_set: ", d_set)
+    return d_set, d_set_dict
+
+
+A_star = A_set(new_Data)
+d_set, d_set_dict = D_set(values[:, -1])
+d_star = []
+for item in d_set:
+    d_star.append(list(item))
+print(d_star)
+
+
+def isSubset(list1, list2):
+    for lis1 in list1:
+        for lis2 in list2:
+            flag = False
+            if (set(lis1) <= set(lis2)):
+                flag = True
+                break
+        if(flag == False):
+            break
+    return flag
+
+# ---------Checking the consistency of decision table ---------------
+
+outfilePossible = open(outFileName+".possible.r","w+")
+# outfileCertain =  open(outFileName+".certain.r","wb")
+if(isSubset(A_star, d_star)):
+    str = "! Possible rule set is not shown since it is identical with the certain rule set"
+    outfilePossible.writelines(str)
+    outfilePossible.close()
+
+# arr = d_set[1]
+# print(type(arr))
+# unique_rows = list(set(tuple(map(tuple, new_Data))))
+
+# A_Star = []
+# new_Data_list = (row for )
+# for i in range(new_Data.shape[0]):
+
