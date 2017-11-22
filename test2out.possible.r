@@ -1,0 +1,5 @@
+(Noise, low) -> (Quality, high)
+(Noise, high) -> (Quality, low)
+(Noise, medium) -> (Quality, low)
+(vibrations, low) -> (Quality, high)
+(Noise, medium) -> (Quality, high)
