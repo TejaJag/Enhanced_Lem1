@@ -1,7 +1,3 @@
-KU ID: 2868498
-Name: Tejaswini Jagarlamudi
-
-Programming Language Used:  Python
 
 Pre-requisites to execute the code : 
 
